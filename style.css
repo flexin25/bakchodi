@@ -229,8 +229,8 @@ body::before {
 .about-box {
     padding: 28px 20px;
     margin: 0;
-    max-width: 600px;
-    width: 90vw;
+    max-width: 900px;
+    width: 80%;
 }
 
 .section-content {
@@ -465,8 +465,21 @@ body::before {
 }
 
 @media (max-width: 600px) {
+    /* Reduce animation and effects on mobile for better performance */
+    body::before {
+        filter: blur(20px) brightness(1) saturate(1);
+        animation: none;
+    }
+
+    .bubbles,
+    .bubbles::before,
+    .bubbles::after,
+    .bubbles span {
+        display: none !important;
+    }
+
     .section-content {
-        padding: 14px 2px;
+        padding: 8px 2px;
     }
 
     .top-nav {
