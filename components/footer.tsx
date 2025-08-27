@@ -1,69 +1,60 @@
 import Link from "next/link"
-import { Github, Twitter, Instagram, Mail } from "lucide-react"
+import { Github, Twitter, Instagram, Crown } from "lucide-react"
 
-export default function Footer() {
+const socialLinks = [
+  {
+    name: "GitHub",
+    url: "https://github.com/flexin25",
+    icon: Github,
+  },
+  {
+    name: "Twitter",
+    url: "https://twitter.com/1mflexin_",
+    icon: Twitter,
+  },
+  {
+    name: "Instagram",
+    url: "https://instagram.com/flexin25_",
+    icon: Instagram,
+  },
+]
+
+export function Footer() {
   return (
-    <footer className="glass backdrop-blur-md border-t border-border/50 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-glow">Abhishek Bardhan</h3>
-            <p className="text-muted-foreground">
-              B.Tech Data Science Student sharing thoughts on chess, music, and life.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <div className="space-y-2">
-              <Link href="/blog" className="block text-muted-foreground hover:text-primary transition-colors">
-                Blog
-              </Link>
-              <Link href="/about" className="block text-muted-foreground hover:text-primary transition-colors">
-                About
-              </Link>
-              <Link href="/contact" className="block text-muted-foreground hover:text-primary transition-colors">
-                Contact
-              </Link>
+    <footer className="border-t border-border/50 bg-background/80 backdrop-blur-md">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-2 group">
+            <div className="relative">
+              <Crown className="h-6 w-6 text-primary group-hover:text-secondary transition-colors duration-300" />
+              <div className="absolute inset-0 bg-primary/20 rounded-full blur-md group-hover:bg-secondary/20 transition-colors duration-300" />
             </div>
-          </div>
+            <span className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              Abhishek Bardhan
+            </span>
+          </Link>
 
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Connect</h3>
-            <div className="flex space-x-4">
-              <Link
-                href="https://github.com/flexin25"
-                target="_blank"
-                className="text-muted-foreground hover:text-primary hover:text-glow transition-all"
-              >
-                <Github size={20} />
-              </Link>
-              <Link
-                href="https://twitter.com/1mflexin_"
-                target="_blank"
-                className="text-muted-foreground hover:text-primary hover:text-glow transition-all"
-              >
-                <Twitter size={20} />
-              </Link>
-              <Link
-                href="https://instagram.com/flexin25_"
-                target="_blank"
-                className="text-muted-foreground hover:text-primary hover:text-glow transition-all"
-              >
-                <Instagram size={20} />
-              </Link>
-              <Link
-                href="mailto:bardhanabhishek50@gmail.com"
-                className="text-muted-foreground hover:text-primary hover:text-glow transition-all"
-              >
-                <Mail size={20} />
-              </Link>
-            </div>
-          </div>
-        </div>
+          {/* Copyright */}
+          <div className="text-sm text-muted-foreground">© 2025 Abhishek. All Rights Reserved.</div>
 
-        <div className="border-t border-border/50 mt-8 pt-8 text-center">
-          <p className="text-muted-foreground">© 2025 Abhishek Bardhan. All Rights Reserved.</p>
+          {/* Social Links */}
+          <div className="flex items-center space-x-4">
+            {socialLinks.map((social) => {
+              const Icon = social.icon
+              return (
+                <Link
+                  key={social.name}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg hover:bg-primary/10 transition-all duration-300 group"
+                >
+                  <Icon className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:scale-110 transition-all duration-300" />
+                </Link>
+              )
+            })}
+          </div>
         </div>
       </div>
     </footer>

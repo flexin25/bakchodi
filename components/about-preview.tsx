@@ -1,113 +1,85 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { Github, Twitter, Instagram, Mail, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import SpotifyEmbed from "@/components/spotify-embed"
+import { Github, Twitter, Instagram, Crown } from "lucide-react"
+import Link from "next/link"
+import Image from "next/image"
 
-export default function AboutPreview() {
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) return null
+export function AboutPreview() {
+  const socialLinks = [
+    { icon: Github, label: "GitHub", username: "flexin25", url: "https://github.com/flexin25" },
+    { icon: Twitter, label: "Twitter", username: "1mflexin_", url: "https://twitter.com/1mflexin_" },
+    { icon: Instagram, label: "Instagram", username: "1mflexin_", url: "https://instagram.com/1mflexin_" },
+  ]
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <div className="space-y-8">
+    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/20">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Content */}
           <div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-glow">About Myself</h2>
-            <div className="space-y-4 text-lg text-muted-foreground">
-              <p>
-                Hi, I am Abhishek Bardhan a 19yo student of Techno India University pursuing B.Tech CSE Data Science. I
-                am originally from the Hearts of Hills Siliguri, West Bengal.
-              </p>
-              <p>I hope you'll find something useful outta here. Peace!</p>
-            </div>
-          </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                About Myself
+              </span>
+            </h2>
 
-          <div className="space-y-6">
-            <h3 className="text-2xl font-semibold text-glow">Connect With Me</h3>
-            <p className="text-muted-foreground">
-              Feel free to connect with me if you have any query or for any collaboration. Reach me out!
+            <p className="text-lg text-muted-foreground mb-6 text-pretty">
+              Hi, I am Abhishek Bardhan a 19yo student of Techno India University pursuing B.Tech CSE Data Science. I am
+              originally from the Hearts of Hills Siliguri, West Bengal.
             </p>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="glass backdrop-blur-md p-4 rounded-lg">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-                  <Mail size={16} />
-                  Email
-                </div>
-                <Link
-                  href="mailto:bardhanabhishek50@gmail.com"
-                  className="text-primary hover:text-glow transition-colors"
-                >
-                  bardhanabhishek50@gmail.com
-                </Link>
-              </div>
+            <p className="text-lg text-muted-foreground mb-8 text-pretty">
+              I love to listen music and artists like Radiohead, Linkin Park, Seedhe Maut, KRSNA, Raftaar etc. I have
+              been a chess passionate kid since the age of 8 though I left competitive games for studies but it still
+              has a special place in my DNA. I hope you'll find something useful outta here. Peace!
+            </p>
 
-              <div className="glass backdrop-blur-md p-4 rounded-lg">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-                  <MapPin size={16} />
-                  Location
-                </div>
-                <span className="text-foreground">Siliguri, West Bengal</span>
-              </div>
+            <div className="grid grid-cols-3 gap-4 mb-8">
+              {socialLinks.map((social, index) => {
+                const Icon = social.icon
+                return (
+                  <Link
+                    key={social.label}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="glass-card group hover:bg-primary/5 transition-all duration-300 p-4 text-center rounded-lg"
+                  >
+                    <Icon className="h-8 w-8 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform duration-300" />
+                    <div className="text-sm font-medium text-primary mb-1">{social.label}</div>
+                    <div className="text-xs text-muted-foreground">@{social.username}</div>
+                  </Link>
+                )
+              })}
             </div>
 
-            <div>
-              <h4 className="text-lg font-semibold mb-3">Other ways to reach me</h4>
-              <div className="flex gap-4">
-                <Link
-                  href="https://github.com/flexin25"
-                  target="_blank"
-                  className="flex items-center gap-2 glass backdrop-blur-md px-4 py-2 rounded-lg hover:glow transition-all"
-                >
-                  <Github size={20} />
-                  <span>flexin25</span>
-                </Link>
-                <Link
-                  href="https://twitter.com/1mflexin_"
-                  target="_blank"
-                  className="flex items-center gap-2 glass backdrop-blur-md px-4 py-2 rounded-lg hover:glow transition-all"
-                >
-                  <Twitter size={20} />
-                  <span>1mflexin_</span>
-                </Link>
-                <Link
-                  href="https://instagram.com/flexin25_"
-                  target="_blank"
-                  className="flex items-center gap-2 glass backdrop-blur-md px-4 py-2 rounded-lg hover:glow transition-all"
-                >
-                  <Instagram size={20} />
-                  <span>flexin25_</span>
-                </Link>
-              </div>
-            </div>
-
-            <Button asChild size="lg" className="glow hover:pulse-glow">
-              <Link href="/about">Learn More About Me</Link>
+            <Button asChild size="lg" className="group">
+              <Link href="/about">
+                Learn More About Me
+                <Crown className="ml-2 h-5 w-5 group-hover:rotate-12 transition-transform duration-300" />
+              </Link>
             </Button>
           </div>
-        </div>
 
-        <div className="space-y-8">
+          {/* Image */}
           <div className="relative">
-            <Image
-              src="/abhishek-banana-photo.png"
-              alt="Abhishek Bardhan"
-              width={400}
-              height={400}
-              className="rounded-2xl glass backdrop-blur-md p-4 hover:glow transition-all duration-500"
+            <div className="relative overflow-hidden rounded-2xl">
+              <Image
+                src="/abhishek-banana-photo.png"
+                alt="Abhishek Bardhan"
+                width={500}
+                height={600}
+                className="w-full h-[600px] object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+            </div>
+
+            {/* Floating elements */}
+            <div className="absolute -top-4 -right-4 w-16 h-16 bg-primary/20 rounded-full blur-xl pulse-neon" />
+            <div
+              className="absolute -bottom-4 -left-4 w-20 h-20 bg-secondary/20 rounded-full blur-xl pulse-neon"
+              style={{ animationDelay: "1s" }}
             />
           </div>
-
-          <SpotifyEmbed />
         </div>
       </div>
     </section>

@@ -1,28 +1,18 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
+import { GeistSans } from "geist/font/sans"
+import { GeistMono } from "geist/font/mono"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import Navigation from "@/components/navigation"
-import Footer from "@/components/footer"
-import CustomCursor from "@/components/custom-cursor"
-import EasterEggs from "@/components/easter-eggs"
-
-const geistSans = Geist({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-geist-sans",
-})
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-geist-mono",
-})
+import { Navigation } from "@/components/navigation"
+import { EnhancedCursor } from "@/components/enhanced-cursor"
+import { EasterEggs } from "@/components/easter-eggs"
+import { AmbientMusic } from "@/components/ambient-music"
+import { Footer } from "@/components/footer"
 
 export const metadata: Metadata = {
-  title: "Abhishek Bardhan - Blog",
-  description: "Personal blog about chess, music, and life experiences",
+  title: "Abhishek Bardhan | Exploring the world, one move at a time",
+  description: "A next-gen blog about solo traveling and chess adventures by Abhishek Bardhan",
   generator: "v0.app",
 }
 
@@ -32,14 +22,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <body className="font-sans">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <CustomCursor />
-          <Navigation />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
+    <html lang="en" suppressHydrationWarning>
+      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange={false}>
+          <EnhancedCursor />
           <EasterEggs />
+          <Navigation />
+          <main className="min-h-screen page-transition">{children}</main>
+          <AmbientMusic />
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

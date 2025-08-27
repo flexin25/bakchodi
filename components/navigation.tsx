@@ -3,92 +3,114 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import ThemeToggle from "@/components/theme-toggle"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { Menu, X, Compass, Crown } from "lucide-react"
+import { cn } from "@/lib/utils"
 
-export default function Navigation() {
+export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (typeof window !== "undefined") {
-        setScrolled(window.scrollY > 50)
-      }
-    }
+    if (typeof window === "undefined") return
 
-    if (typeof window !== "undefined") {
-      window.addEventListener("scroll", handleScroll)
-      return () => window.removeEventListener("scroll", handleScroll)
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
     }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   const navItems = [
-    { href: "/", label: "Home" },
-    { href: "/blog", label: "Blog" },
+    { href: "/", label: "Home", icon: Compass },
+    { href: "/blog", label: "Blog", icon: Crown },
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
   ]
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrolled ? "glass backdrop-blur-md" : "bg-transparent"
-      }`}
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        scrolled ? "bg-background/80 backdrop-blur-md border-b border-border/50" : "bg-transparent",
+      )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <Link href="/" className="text-xl font-bold text-glow hover:scale-105 transition-transform">
-            Abhishek Bardhan
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-2 group">
+            <div className="relative">
+              <Crown className="h-8 w-8 text-primary group-hover:text-secondary transition-colors duration-300 float-animation" />
+              <div className="absolute inset-0 bg-primary/20 rounded-full blur-md group-hover:bg-secondary/20 transition-colors duration-300" />
+            </div>
+            <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              Abhishek Bardhan
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`transition-all duration-300 hover:text-primary hover:text-glow ${
-                  pathname === item.href ? "text-primary text-glow" : "text-foreground"
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const Icon = item.icon
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-300 group",
+                    pathname === item.href
+                      ? "text-primary bg-primary/10 glow-effect"
+                      : "text-muted-foreground hover:text-primary hover:bg-primary/5",
+                  )}
+                >
+                  {Icon && <Icon className="h-4 w-4 group-hover:scale-110 transition-transform duration-300" />}
+                  <span>{item.label}</span>
+                </Link>
+              )
+            })}
             <ThemeToggle />
           </div>
 
-          {/* Mobile Navigation Button */}
+          {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
             <ThemeToggle />
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsOpen(!isOpen)}
-              className="text-foreground hover:text-primary"
+              className="text-primary hover:text-secondary"
             >
-              {isOpen ? <X size={20} /> : <Menu size={20} />}
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
           </div>
         </div>
 
-        {/* Mobile Navigation Menu */}
+        {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden glass backdrop-blur-md rounded-lg mt-2 p-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`block py-2 transition-all duration-300 hover:text-primary hover:text-glow ${
-                  pathname === item.href ? "text-primary text-glow" : "text-foreground"
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
+          <div className="md:hidden absolute top-16 left-0 right-0 bg-background/95 backdrop-blur-md border-b border-border/50">
+            <div className="px-4 py-4 space-y-2">
+              {navItems.map((item) => {
+                const Icon = item.icon
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className={cn(
+                      "flex items-center space-x-2 px-4 py-3 rounded-lg transition-all duration-300",
+                      pathname === item.href
+                        ? "text-primary bg-primary/10 glow-effect"
+                        : "text-muted-foreground hover:text-primary hover:bg-primary/5",
+                    )}
+                  >
+                    {Icon && <Icon className="h-5 w-5" />}
+                    <span>{item.label}</span>
+                  </Link>
+                )
+              })}
+            </div>
           </div>
         )}
       </div>
